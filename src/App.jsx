@@ -1,8 +1,13 @@
 import { useState } from "react";
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Root from "./pages/Root";
 import Home from "./pages/Home";
+import { tokenLoader } from "./utils/auth";
+import Authentication,{ action as authAction } from "./pages/Authenticate";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import { HomePageLoaders } from "./loaders/HomePageLoader";
 
 function App() {
   const router = createBrowserRouter([
@@ -10,50 +15,29 @@ function App() {
       path: "/",
       element: <Root />,
       // errorElement: <Error></Error>,
-      // loader: tokenLoader,
+      loader: tokenLoader,
       id: "root",
       children: [
-        { index: true, element: <Home />, id: "home" },
-        // {
-        //   path: "profile",
-        //   element: <Profile />,
-        //   loader: ProfileLoader,
-        //   id: "profile",
-        // },
-        // {
-        //   path: "shops/:id",
-        //   element: <ShopDetails />,
-        //   loader: shopDetailsLoader,
-        //   id: "shop-details",
-        // },
-        // {
-        //   path: "auth",
-        //   element: <Authentication />,
-        //   action: (args) => authAction({ ...args, context: { setUserData } }),
-        //   children: [
-        //     { index: true, element: <Navigate to="login" replace /> },
-        //     {
-        //       path: "login",
-        //       element: <Login />,
-        //       action: (args) =>
-        //         authAction({ ...args, context: { setUserData } }),
-        //     },
-        //     {
-        //       path: "signup",
-        //       element: <SignUp />,
-        //       action: (args) =>
-        //         authAction({ ...args, context: { setUserData } }),
-        //     },
-        //     {
-        //       path: "accept-invite",
-        //       element: <InviteSignup></InviteSignup>
-        //     }
-        //   ],
-        // },
-        // {
-        //   path: "/logout",
-        //   action: logoutAction,
-        // },
+        { index: true, element: <Home />,loader: HomePageLoaders, id: "home" },
+        {
+          path: "auth",
+          element: <Authentication />,
+          action: authAction,
+          children: [
+            { index: true, element: <Navigate to="login" replace /> },
+            {
+              path: "login",
+              element: <Login />,
+              action: authAction,
+            },
+            {
+              path: "signup",
+              element: <SignUp />,
+              // action: (args) =>
+              //   authAction({ ...args, context: { setUserData } }),
+            },
+          ],
+        },
       ],
     },
   ]);
