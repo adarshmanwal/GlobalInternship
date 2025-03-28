@@ -1,24 +1,23 @@
-import { useState } from "react";
-import "./App.css";
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import Root from "./pages/Root";
-import Home from "./pages/Home";
-import { tokenLoader } from "./utils/auth";
-import Authentication,{ action as authAction } from "./pages/Authenticate";
+import Authentication, { action as authAction } from "./pages/Authenticate";
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import { HomePageLoaders } from "./loaders/HomePageLoader";
+import UserList from "./pages/UserList";
+import { action as logoutAction } from "./pages/Logout";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Root />,
-      // errorElement: <Error></Error>,
-      loader: tokenLoader,
       id: "root",
       children: [
-        { index: true, element: <Home />,loader: HomePageLoaders, id: "home" },
+        { index: true, element: <Navigate to="users" replace /> },
+        { path: "users", element: <UserList /> },
         {
           path: "auth",
           element: <Authentication />,
@@ -30,13 +29,11 @@ function App() {
               element: <Login />,
               action: authAction,
             },
-            {
-              path: "signup",
-              element: <SignUp />,
-              // action: (args) =>
-              //   authAction({ ...args, context: { setUserData } }),
-            },
           ],
+        },
+        {
+          path: "/logout",
+          action: logoutAction,
         },
       ],
     },

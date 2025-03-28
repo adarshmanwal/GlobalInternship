@@ -13,18 +13,16 @@ export default function Authentication() {
 
 export async function action({ request }) {
   try {
-    debugger;
     const url = new URL(request.url);
     const endpoint = url.pathname.split("/").filter(Boolean).pop();
     const formData = await request.formData();
 
     const authData = {
-      //   email: formData.get("email"),
-      //   password: formData.get("password"),
-      email: "eve.holt@reqres.in",
-      password: "cityslicka",
+      email: formData.get("email"),
+      password: formData.get("password"),
+      // email: "eve.holt@reqres.in",
+      // password: "cityslicka",
     };
-    debugger;
     const response = await httpClient.post(`/api/${endpoint}`, authData);
     if (![200, 201].includes(response.status)) {
       return response;
@@ -40,9 +38,6 @@ export async function action({ request }) {
 
     return redirect("/");
   } catch (error) {
-    // if (error.response && error.response.data.error === "Validation error") {
-    //   return { error: ["Email already exist"] }; // Ensure it's an array
-    // }
     return { error: ["An unexpected error occurred"] };
   }
 }

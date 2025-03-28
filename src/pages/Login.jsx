@@ -1,6 +1,5 @@
 import React from "react";
-import AuthForm from "../components.jsx/AuthForm";
-import httpClient from "../utils/httpClient";
+import AuthForm from "../components/AuthForm";
 
 export default function Login() {
   return (
@@ -11,4 +10,3 @@ export default function Login() {
     </div>
   );
 }
-

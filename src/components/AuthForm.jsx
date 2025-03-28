@@ -1,27 +1,14 @@
 import React, { useState } from "react";
-import { Form, Link, useNavigation } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 
-export default function AuthForm({mode}) {
-    const navigation = useNavigation();
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [data, setData] = useState(null);
+export default function AuthForm({ mode }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     <>
       <Form method="post">
         <h1 className="text-2xl font-bold mb-4 text-center">
           {mode === "login" ? "Log in" : "Create a new account"}
         </h1>
-
-        {/* {data?.error && (
-          <ul className="text-red-500 mb-4">
-            {Array.isArray(data.error) ? (
-              data.error.map((err, index) => <li key={index}>{err}</li>)
-            ) : (
-              <li>{data.error}</li>
-            )}
-          </ul>
-        )} */}
-        {/* {data?.message && <p className="text-red-500 mb-4">{data.message}</p>} */}
 
         <div className="mb-4">
           <label htmlFor="email" className="block mb-1 font-medium">

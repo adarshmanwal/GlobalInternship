@@ -30,8 +30,7 @@ httpClient.interceptors.response.use(
   },
   (error) => {
     console.error("Error Response:", error);
-    if(error.code === "ERR_NETWORK" )
-    {
+    if (error.code === "ERR_NETWORK") {
       return Promise.reject(error);
     }
     // Handle 401 Unauthorized globally (redirect to login)
