@@ -18,10 +18,10 @@ export async function action({ request }) {
     const formData = await request.formData();
 
     const authData = {
-      email: formData.get("email"),
-      password: formData.get("password"),
-      // email: "eve.holt@reqres.in",
-      // password: "cityslicka",
+      // email: formData.get("email"),
+      // password: formData.get("password"),
+      email: "eve.holt@reqres.in",
+      password: "cityslicka",
     };
     const response = await httpClient.post(`/api/${endpoint}`, authData);
     if (![200, 201].includes(response.status)) {

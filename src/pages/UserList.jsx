@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import httpClient from "../utils/httpClient";
 import { getAuthToken } from "../utils/auth";
+import { UsersContext } from "../store/users-context";
 
 function UserList() {
-  const [usersData, setUsersData] = useState({ data: [], total_pages: 0 });
+  const { users, setUsers, total_pages, setTotalPages,setCurrentPage,current_page } =
+    useContext(UsersContext);
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -19,16 +21,21 @@ function UserList() {
       navigate("?page=1", { replace: true });
       return;
     }
-    const users = async () => {
+    if (users.length > 0 && current_page == params.get("page")) {
+      return;
+    }
+    const usersData = async () => {
       try {
         const response = await httpClient.get(`/api/users${location.search}`);
-        setUsersData(response.data);
+        setCurrentPage(response.data.page)
+        setTotalPages(response.data.total_pages);
+        setUsers(response.data.data);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
 
-    users();
+    usersData();
   }, [location.search, navigate]);
 
   const currentPage =
@@ -36,13 +43,22 @@ function UserList() {
   const goToPage = (page) => {
     navigate(`?page=${page}`);
   };
+
+  const handleDelete = async (id) => {
+    try {
+      await httpClient.delete(`/api/users/${id}`);
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
   return (
     <>
       {/* user list  */}
       <div className="px-4 sm:px-6 lg:px-8">
         <ul role="list" className="divide-y divide-gray-100">
-          {usersData.data.length > 0 ? (
-            usersData.data.map((user) => (
+          {users.length > 0 ? (
+            users.map((user) => (
               <li key={user.id} className="flex justify-between gap-x-6 py-5">
                 <div className="flex min-w-0 gap-x-4">
                   <img
@@ -62,13 +78,25 @@ function UserList() {
                     </p>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="text-sm text-gray-500"
-                  onClick={() => navigate(`/users/${user.id}`)}
-                >
-                  View
-                </button>
+                <div className="flex gap-2">
+                  {/* Edit Button */}
+                  <button
+                    type="button"
+                    className="text-sm text-green-500 hover:underline"
+                    onClick={() => navigate(`/users/${user.id}`)}
+                  >
+                    Edit
+                  </button>
+
+                  {/* Delete Button */}
+                  <button
+                    type="button"
+                    className="text-sm text-red-500 hover:underline"
+                    onClick={() => handleDelete(user.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </li>
             ))
           ) : (
@@ -77,7 +105,7 @@ function UserList() {
         </ul>
       </div>
       {/* pagination */}
-      {usersData.total_pages && usersData.total_pages > 1 && (
+      {total_pages && total_pages > 1 && (
         <div>
           <div className="border-t border-gray-200 bg-white px-4 py-3">
             <div className="flex justify-center">
@@ -110,7 +138,7 @@ function UserList() {
                   </button>
                   <div className="flex gap-2">
                     {Array.from(
-                      { length: usersData.total_pages },
+                      { length: total_pages },
                       (_, index) => index + 1
                     ).map((page) => (
                       <button
@@ -128,9 +156,9 @@ function UserList() {
                   </div>
                   <button
                     onClick={() => goToPage(currentPage + 1)}
-                    disabled={currentPage === usersData.total_pages}
+                    disabled={currentPage === total_pages}
                     className={`relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 ${
-                      currentPage === usersData.total_pages
+                      currentPage === total_pages
                         ? "cursor-not-allowed opacity-50"
                         : ""
                     }`}
