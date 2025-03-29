@@ -1,12 +1,41 @@
-# React + Vite
+# Getting Started
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Clone the Repository
+Clone the project from GitHub:
+```bash
+git clone https://github.com/adarshmanwal/GlobalInternship
+```
 
-Currently, two official plugins are available:
+## 2. Navigate to the Project Directory
+```bash
+cd GlobalInternship
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 3. Install Dependencies
+```bash
+npm install
+```
 
-## Expanding the ESLint configuration
+## 4. Start the Development Server
+```bash
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Dependencies
+The project utilizes the following technologies:
+
+- **React**: Frontend library for building user interfaces.
+- **React Router**: For routing and navigation.
+- **Axios**: For making HTTP requests.
+- **TailwindCSS**: For styling.
+- **Vite**: Build tool for fast development.
+
+# API Integration
+This application interacts with the **Reqres API** for user data management. The base URL is configured in:
+```
+src/utils/httpClient.js
+```
+Ensure the API endpoints are correctly configured for seamless data fetching and user interactions.
+
+---
+This document provides a comprehensive guide to setting up and running the project efficiently. 🚀

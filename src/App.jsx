@@ -10,7 +10,7 @@ import UserList from "./pages/UserList";
 import { action as logoutAction } from "./pages/Logout";
 import EditUser from "./pages/EditUser";
 import { UserDetailsLoader } from "./loaders/UserDetailsLoader";
-import { action as EditUserAction} from "../src/pages/EditUser"
+import NotFound from "./pages/NotFound";
 function App() {
   const router = createBrowserRouter([
     {
@@ -45,6 +45,7 @@ function App() {
         },
       ],
     },
+    { path: "*", element: <NotFound /> },
   ]);
   return <RouterProvider router={router}></RouterProvider>;
 }

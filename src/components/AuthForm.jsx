@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useActionData } from "react-router-dom";
 
 export default function AuthForm({ mode }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const data = useActionData();
   return (
     <>
       <Form method="post">
-        <h1 className="text-2xl font-bold mb-4 text-center">
-          {mode === "login" ? "Log in" : "Create a new account"}
-        </h1>
-
+        <h1 className="text-2xl font-bold mb-4 text-center">Log in</h1>
+        {data?.error && (
+          <ul className="text-red-500 mb-4">
+            {Array.isArray(data.error) ? (
+              data.error.map((err, index) => <li key={index}>{err}</li>)
+            ) : (
+              <li>{data.error}</li>
+            )}
+          </ul>
+        )}
         <div className="mb-4">
           <label htmlFor="email" className="block mb-1 font-medium">
             Email
@@ -45,20 +52,11 @@ export default function AuthForm({ mode }) {
                 : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
-            {isSubmitting
-              ? "Submitting..."
-              : mode === "login"
-              ? "Login"
-              : "Sign Up"}
+            Login
           </button>
 
-          <Link
-            to={mode === "login" ? "/auth/signup" : "/auth/login"}
-            className="text-blue-600 hover:underline"
-          >
-            {mode === "login"
-              ? "Don't have an account? Sign Up"
-              : "Already have an account? Log in"}
+          <Link to={"/auth/login"} className="text-blue-600 hover:underline">
+            Don't have an account? Sign Up
           </Link>
         </div>
       </Form>
